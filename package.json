@@ -10,8 +10,13 @@
     "lint": "eslint . --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate dev",
+    "docker:start": "./scripts/docker.sh start",
+    "docker:stop": "./scripts/docker.sh stop",
+    "docker:restart": "./scripts/docker.sh restart",
+    "docker:logs": "./scripts/docker.sh logs",
+    "docker:clean": "./scripts/docker.sh clean"
   },
   "keywords": [],
   "author": "",
