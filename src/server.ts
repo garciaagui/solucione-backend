@@ -3,6 +3,7 @@ import 'dotenv/config'
 import express from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import errorMiddleware from './middlewares/error-middleware'
 
 const app = express()
 
@@ -16,6 +17,8 @@ app.use(express.json())
 app.get('/', (req, res) => {
   res.json({ message: 'API is running' })
 })
+
+app.use(errorMiddleware)
 
 const PORT = process.env.API_PORT || 3000
 
