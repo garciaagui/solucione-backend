@@ -1,0 +1,75 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id            String    @id @default(uuid()) @db.Uuid
+    name          String    @db.VarChar(255)
+    email         String    @unique
+    password      String    @db.VarChar(255)
+    role          Role
+    emailVerified Boolean   @default(false) @map(name: "verified_email")
+    verifyToken   String?   @map(name: "verify_token")
+    createdAt     DateTime  @default(now()) @map(name: "created_at")
+    updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+
+    complaints    Complaint[]
+    replies       Reply[]
+
+    @@map(name: "users")
+}
+
+model Complaint {
+    id              String    @id @default(uuid()) @db.Uuid
+    title           String    @db.VarChar(127)
+    description     String    @db.Text
+    street          String    @db.VarChar(255)
+    neighborhood    String    @db.VarChar(255)
+    zipCode         String    @map(name: "zip_code") @db.Char(10)
+    addressReference String?  @map(name: "address_reference") @db.VarChar(255)
+    status          Status    @default(Aberto)
+    images          String[]  @db.VarChar(255)
+    userId          String    @map(name: "user_id") @db.Uuid
+    createdAt       DateTime  @default(now()) @map(name: "created_at")
+    updatedAt       DateTime  @updatedAt @map(name: "updated_at")
+
+    user            User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    replies         Reply[]
+
+    @@map(name: "complaints")
+}
+
+model Reply {
+    id              String    @id @default(uuid()) @db.Uuid
+    description     String    @db.Text
+    images          String[]  @db.VarChar(255)
+    userId          String    @map(name: "user_id") @db.Uuid
+    complaintId     String    @map(name: "complaint_id") @db.Uuid
+    complaintStatus Status    @map(name: "complaint_status")
+    createdAt       DateTime  @default(now()) @map(name: "created_at")
+    updatedAt       DateTime  @updatedAt @map(name: "updated_at")
+
+    user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    complaint Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@map(name: "replies")
+}
+
+enum Role {
+    user
+    admin
+    manager
+}
+
+enum Status {
+    Aberto
+    Analise
+    Andamento
+    Finalizado
+    Arquivado
+}

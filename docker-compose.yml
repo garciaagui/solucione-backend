@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: solucione_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=solucione
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - TZ=America/Sao_Paulo
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - solucione_network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -q -d solucione -U user']
+      interval: 5s
+      timeout: 2s
+      retries: 20
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: solucione_pgadmin
+    restart: unless-stopped
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+    ports:
+      - '5050:5050'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - solucione_network
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  solucione_network:
+    driver: bridge
