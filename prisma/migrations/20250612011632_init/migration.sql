@@ -6,7 +6,7 @@ CREATE TYPE "Status" AS ENUM ('Aberto', 'Analise', 'Andamento', 'Finalizado', 'A
 
 -- CreateTable
 CREATE TABLE "users" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" VARCHAR(255) NOT NULL,
     "email" TEXT NOT NULL,
     "password" VARCHAR(255) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE "users" (
 
 -- CreateTable
 CREATE TABLE "complaints" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "title" VARCHAR(127) NOT NULL,
     "description" TEXT NOT NULL,
     "street" VARCHAR(255) NOT NULL,
@@ -29,8 +29,8 @@ CREATE TABLE "complaints" (
     "zip_code" CHAR(10) NOT NULL,
     "address_reference" VARCHAR(255),
     "status" "Status" NOT NULL DEFAULT 'Aberto',
-    "images" VARCHAR(255)[],
-    "user_id" INTEGER NOT NULL,
+    "images" VARCHAR(255)[] NOT NULL,
+    "user_id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -39,11 +39,11 @@ CREATE TABLE "complaints" (
 
 -- CreateTable
 CREATE TABLE "replies" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "description" TEXT NOT NULL,
-    "images" VARCHAR(255)[],
-    "user_id" INTEGER NOT NULL,
-    "complaint_id" INTEGER NOT NULL,
+    "images" VARCHAR(255)[] NOT NULL,
+    "user_id" UUID NOT NULL,
+    "complaint_id" UUID NOT NULL,
     "complaint_status" "Status" NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
