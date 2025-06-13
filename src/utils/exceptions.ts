@@ -15,6 +15,14 @@ export class BadRequestException extends HttpException {
   }
 }
 
+export class UnauthorizedException extends HttpException {
+  private static status = 401
+
+  constructor(message: string) {
+    super(UnauthorizedException.status, message)
+  }
+}
+
 export class NotFoundException extends HttpException {
   private static status = 404
 
