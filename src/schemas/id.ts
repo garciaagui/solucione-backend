@@ -1,3 +1,3 @@
-import Joi from 'joi'
+import joi from 'joi'
 
-export const idSchema = Joi.string().uuid()
+export const idSchema = joi.string().uuid()
