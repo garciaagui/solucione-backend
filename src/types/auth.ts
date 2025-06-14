@@ -27,6 +27,10 @@ export interface RegisterResponse {
   }
 }
 
+export interface VerifyEmailResponse {
+  message: string
+}
+
 export interface UpdateUserData {
   name: string
   password: string
