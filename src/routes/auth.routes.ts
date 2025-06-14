@@ -19,4 +19,8 @@ router.post('/register', (req: Request, res: Response, next: NextFunction) => {
   controller.register(req, res, next)
 })
 
+router.get('/verify-email', (req: Request, res: Response, next: NextFunction) => {
+  controller.verifyEmail(req, res, next)
+})
+
 export default router
