@@ -7,8 +7,11 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  user: UserBasicInfo
-  token: string
+  message: string
+  data: {
+    user: UserBasicInfo
+    token: string
+  }
 }
 
 export interface RegisterRequest {

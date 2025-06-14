@@ -35,8 +35,11 @@ export default class AuthService {
     const token = generateLoginToken(userBasicInfo)
 
     return {
-      user: userBasicInfo,
-      token,
+      message: 'Login realizado com sucesso',
+      data: {
+        user: userBasicInfo,
+        token,
+      },
     }
   }
 
