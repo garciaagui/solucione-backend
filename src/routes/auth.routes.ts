@@ -15,4 +15,8 @@ router.post('/login', (req: Request, res: Response, next: NextFunction) => {
   controller.login(req, res, next)
 })
 
+router.post('/register', (req: Request, res: Response, next: NextFunction) => {
+  controller.register(req, res, next)
+})
+
 export default router
