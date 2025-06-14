@@ -25,4 +25,14 @@ export default class AuthController {
       next(error)
     }
   }
+
+  public async verifyEmail(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.query.token as string
+      const response = await this.service.verifyEmail(token)
+      return res.status(200).json(response)
+    } catch (error) {
+      next(error)
+    }
+  }
 }

@@ -22,4 +22,14 @@ export default class AuthModel {
       data,
     })
   }
+
+  public async verifyUserEmail(email: string): Promise<User> {
+    return this.prisma.user.update({
+      where: { email },
+      data: {
+        emailVerified: true,
+        verifyToken: null,
+      },
+    })
+  }
 }

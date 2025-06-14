@@ -1,8 +1,8 @@
 import AuthModel from '@/models/auth.model'
-import { LoginResponse, RegisterResponse } from '@/types/auth'
+import { LoginResponse, RegisterResponse, VerifyEmailResponse } from '@/types/auth'
 import { UserBasicInfo } from '@/types/user'
-import { ConflictException, UnauthorizedException } from '@/utils/exceptions'
-import { generateLoginToken, generateRegisterToken } from '@/utils/jwt'
+import { ConflictException, NotFoundException, UnauthorizedException } from '@/utils/exceptions'
+import { generateLoginToken, generateRegisterToken, verifyRegisterToken } from '@/utils/jwt'
 import { sendVerificationEmail } from '@/utils/resend'
 import { validateLogin, validateRegister } from '@/validations/auth'
 import { Role } from '@prisma/client'
@@ -84,5 +84,22 @@ export default class AuthService {
         user: userBasicInfo,
       },
     }
+  }
+
+  public async verifyEmail(token: string): Promise<VerifyEmailResponse> {
+    const email = verifyRegisterToken(token)
+    const user = await this.model.findUserByEmail(email)
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado')
+    }
+
+    if (user.emailVerified) {
+      return { message: 'E-mail já verificado.' }
+    }
+
+    await this.model.verifyUserEmail(email)
+
+    return { message: 'E-mail verificado com sucesso.' }
   }
 }
