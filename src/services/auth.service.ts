@@ -1,9 +1,11 @@
 import AuthModel from '@/models/auth.model'
-import { LoginResponse } from '@/types/auth'
+import { LoginResponse, RegisterResponse } from '@/types/auth'
 import { UserBasicInfo } from '@/types/user'
-import { UnauthorizedException } from '@/utils/exceptions'
-import { generateToken } from '@/utils/jwt'
-import { validateLogin } from '@/validations/auth'
+import { ConflictException, UnauthorizedException } from '@/utils/exceptions'
+import { generateLoginToken, generateRegisterToken } from '@/utils/jwt'
+import { sendVerificationEmail } from '@/utils/resend'
+import { validateLogin, validateRegister } from '@/validations/auth'
+import { Role } from '@prisma/client'
 import bcrypt from 'bcrypt'
 
 export default class AuthService {
@@ -30,11 +32,54 @@ export default class AuthService {
       email: user.email,
     }
 
-    const token = generateToken(userBasicInfo)
+    const token = generateLoginToken(userBasicInfo)
 
     return {
       user: userBasicInfo,
       token,
+    }
+  }
+
+  public async register(name: string, email: string, password: string): Promise<RegisterResponse> {
+    validateRegister(name, email, password)
+
+    const existingUser = await this.model.findUserByEmail(email)
+
+    if (existingUser && existingUser.emailVerified) {
+      throw new ConflictException('Já existe um usuário com este e-mail')
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const token = generateRegisterToken(email)
+
+    const userData = {
+      name,
+      password: hashedPassword,
+      role: Role.user,
+      verifyToken: token,
+    }
+
+    let newUser
+
+    if (existingUser && !existingUser.emailVerified) {
+      newUser = await this.model.updateUser(email, userData)
+    } else {
+      newUser = await this.model.createUser({ ...userData, email })
+    }
+
+    await sendVerificationEmail(name, email, token)
+
+    const userBasicInfo: UserBasicInfo = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+    }
+
+    return {
+      message: 'Usuário cadastrado. Verifique seu e-mail.',
+      data: {
+        user: userBasicInfo,
+      },
     }
   }
 }
