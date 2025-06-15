@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
@@ -9,10 +10,16 @@ import routes from './routes'
 const app = express()
 
 // Middlewares
-app.use(cors())
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  }),
+)
 app.use(helmet())
 app.use(morgan('dev'))
 app.use(express.json())
+app.use(cookieParser())
 
 // Routes
 app.get('/', (req, res) => {
