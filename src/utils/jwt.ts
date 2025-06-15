@@ -5,7 +5,7 @@ import { BadRequestException, UnauthorizedException } from './exceptions'
 const JWT_SECRET = process.env.JWT_SECRET!
 const JWT_ALGORITHM = 'HS256'
 
-export const generateLoginToken = (user: UserBasicInfo): string => {
+export const generateAuthToken = (user: UserBasicInfo): string => {
   const jwtConfig: SignOptions = {
     expiresIn: '24h',
     algorithm: JWT_ALGORITHM,

@@ -2,7 +2,7 @@ import AuthModel from '@/models/auth.model'
 import { LoginResponse, LogoutResponse, RegisterResponse, VerifyEmailResponse } from '@/types/auth'
 import { UserBasicInfo } from '@/types/user'
 import { ConflictException, NotFoundException, UnauthorizedException } from '@/utils/exceptions'
-import { generateLoginToken, generateRegisterToken, verifyRegisterToken } from '@/utils/jwt'
+import { generateAuthToken, generateRegisterToken, verifyRegisterToken } from '@/utils/jwt'
 import { sendVerificationEmail } from '@/utils/resend'
 import { validateLogin, validateRegister } from '@/validations/auth'
 import { Role } from '@prisma/client'
@@ -32,7 +32,7 @@ export default class AuthService {
       email: user.email,
     }
 
-    const token = generateLoginToken(userBasicInfo)
+    const token = generateAuthToken(userBasicInfo)
 
     const response = {
       message: 'Login realizado com sucesso',
