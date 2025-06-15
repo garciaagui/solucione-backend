@@ -37,7 +37,7 @@ export default class AuthService {
     return {
       message: 'Login realizado com sucesso',
       data: {
-        user: userBasicInfo,
+        user: { ...userBasicInfo, role: user.role },
         token,
       },
     }

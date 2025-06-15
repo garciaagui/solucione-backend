@@ -9,7 +9,9 @@ export interface LoginRequest {
 export interface LoginResponse {
   message: string
   data: {
-    user: UserBasicInfo
+    user: {
+      role: Role
+    } & UserBasicInfo
     token: string
   }
 }
