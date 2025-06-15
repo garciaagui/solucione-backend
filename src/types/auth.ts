@@ -32,6 +32,10 @@ export interface VerifyEmailResponse {
   message: string
 }
 
+export interface LogoutResponse {
+  message: string
+}
+
 export interface UpdateUserData {
   name: string
   password: string
