@@ -1,5 +1,5 @@
 import AuthModel from '@/models/auth.model'
-import { LoginResponse, RegisterResponse, VerifyEmailResponse } from '@/types/auth'
+import { LoginResponse, LogoutResponse, RegisterResponse, VerifyEmailResponse } from '@/types/auth'
 import { UserBasicInfo } from '@/types/user'
 import { ConflictException, NotFoundException, UnauthorizedException } from '@/utils/exceptions'
 import { generateLoginToken, generateRegisterToken, verifyRegisterToken } from '@/utils/jwt'
@@ -100,5 +100,11 @@ export default class AuthService {
     await this.model.verifyUserEmail(email)
 
     return { message: 'E-mail verificado com sucesso.' }
+  }
+
+  public async logout(): Promise<LogoutResponse> {
+    console.log('👤 Logout realizado')
+
+    return { message: 'Logout realizado com sucesso.' }
   }
 }

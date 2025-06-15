@@ -43,4 +43,21 @@ export default class AuthController {
       next(error)
     }
   }
+
+  public async logout(req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this.service.logout()
+
+      res.clearCookie('authToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/api',
+      })
+
+      return res.status(200).json(response)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
