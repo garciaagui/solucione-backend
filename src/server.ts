@@ -4,7 +4,7 @@ import 'dotenv/config'
 import express from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
-import errorMiddleware from './middlewares/error-middleware'
+import { errorMiddleware } from './middlewares'
 import routes from './routes'
 
 const app = express()

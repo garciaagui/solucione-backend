@@ -7,12 +7,16 @@ interface AuthenticatedRequest extends Request {
   user?: UserBasicInfo
 }
 
-export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export default function authMiddleware(
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const token = req.cookies?.authToken
 
     if (!token) {
-      throw new UnauthorizedException('Token de acesso requerido')
+      throw new UnauthorizedException('Token de autenticação não encontrado')
     }
 
     const decoded = verifyAuthToken(token)
