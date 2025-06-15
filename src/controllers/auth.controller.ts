@@ -8,7 +8,15 @@ export default class AuthController {
   public async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password }: LoginRequest = req.body
-      const response = await this.service.login(email, password)
+      const { response, token } = await this.service.login(email, password)
+
+      res.cookie('authToken', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000, // 24h
+        path: '/api',
+      })
 
       return res.status(200).json(response)
     } catch (error) {
