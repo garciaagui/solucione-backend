@@ -12,7 +12,6 @@ export interface LoginResponse {
     user: {
       role: Role
     } & UserBasicInfo
-    token: string
   }
 }
 
