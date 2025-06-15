@@ -1,6 +1,6 @@
 import { UserBasicInfo } from '@/types/user'
 import jwt, { SignOptions, TokenExpiredError } from 'jsonwebtoken'
-import { BadRequestException, UnauthorizedException } from './exceptions'
+import { UnauthorizedException } from './exceptions'
 
 const JWT_SECRET = process.env.JWT_SECRET!
 const JWT_ALGORITHM = 'HS256'
@@ -35,9 +35,26 @@ export const generateRegisterToken = (email: string): string => {
   return token
 }
 
+export const verifyAuthToken = (token: string | null): UserBasicInfo => {
+  if (!token) {
+    throw new UnauthorizedException('Token de autenticação não encontrado')
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as UserBasicInfo
+    return decoded
+  } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      throw new UnauthorizedException('Token de autenticação expirado')
+    }
+
+    throw new UnauthorizedException('Token de autenticação inválido')
+  }
+}
+
 export const verifyRegisterToken = (token: string | null): string => {
   if (!token) {
-    throw new BadRequestException('Token de verificação não encontrado')
+    throw new UnauthorizedException('Token de verificação não encontrado')
   }
 
   try {
