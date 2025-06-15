@@ -7,12 +7,13 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  message: string
-  data: {
+  response: {
+    message: string
     user: {
       role: Role
     } & UserBasicInfo
   }
+  token: string
 }
 
 export interface RegisterRequest {

@@ -34,13 +34,12 @@ export default class AuthService {
 
     const token = generateLoginToken(userBasicInfo)
 
-    return {
+    const response = {
       message: 'Login realizado com sucesso',
-      data: {
-        user: { ...userBasicInfo, role: user.role },
-        token,
-      },
+      user: { ...userBasicInfo, role: user.role },
     }
+
+    return { response, token }
   }
 
   public async register(name: string, email: string, password: string): Promise<RegisterResponse> {
