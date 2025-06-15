@@ -15,6 +15,10 @@ router.post('/login', (req: Request, res: Response, next: NextFunction) => {
   controller.login(req, res, next)
 })
 
+router.post('/logout', (req: Request, res: Response, next: NextFunction) => {
+  controller.logout(req, res, next)
+})
+
 router.post('/register', (req: Request, res: Response, next: NextFunction) => {
   controller.register(req, res, next)
 })
