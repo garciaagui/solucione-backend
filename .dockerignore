@@ -1,0 +1,16 @@
+.github/*
+.vscode/*
+node_modules/*
+dist/*
+
+.git
+.dockerignore
+.gitignore
+.prettierrc
+.eslintrc.json
+.env
+.env.example
+
+docker-compose.yml
+Dockerfile
+README.md
