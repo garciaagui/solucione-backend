@@ -26,6 +26,12 @@ const DEFAULT_INCLUDE = {
 export default class ComplaintModel {
   constructor(private readonly prisma: PrismaClient) {}
 
+  public async findAll(): Promise<ComplaintWithRelations[]> {
+    return this.prisma.complaint.findMany({
+      include: DEFAULT_INCLUDE,
+    })
+  }
+
   public async findById(id: UUID): Promise<ComplaintWithRelations | null> {
     return this.prisma.complaint.findUnique({
       where: { id },

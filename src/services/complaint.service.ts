@@ -7,6 +7,10 @@ import { UUID } from 'crypto'
 export default class ComplaintService {
   constructor(private readonly model: ComplaintModel) {}
 
+  public async findAll(): Promise<ComplaintWithRelations[]> {
+    return this.model.findAll()
+  }
+
   public async findById(id: UUID): Promise<ComplaintWithRelations> {
     validateId(id)
 
