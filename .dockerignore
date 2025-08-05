@@ -1,3 +1,5 @@
+*.md
+
 .github/*
 .vscode/*
 node_modules/*
@@ -7,6 +9,7 @@ dist/*
 .dockerignore
 .gitignore
 .prettierrc
+.releaserc
 .eslintrc.json
 .env
 .env.example
