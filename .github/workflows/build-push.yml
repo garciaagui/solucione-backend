@@ -6,11 +6,8 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
   id-token: write
-  issues: write
-  pull-requests: write
-  actions: write
 
 jobs:
   build:
@@ -29,11 +26,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Semantic release
-        uses: cycjimmy/semantic-release-action@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Generate image tag
         id: generate_image_tag
