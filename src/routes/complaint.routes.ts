@@ -11,6 +11,10 @@ const model = new ComplaintModel(prisma)
 const service = new ComplaintService(model)
 const controller = new ComplaintController(service)
 
+router.get('/', (req: Request, res: Response, next: NextFunction) => {
+  controller.findAll(req, res, next)
+})
+
 router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
   controller.findById(req, res, next)
 })
