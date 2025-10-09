@@ -1,11 +1,7 @@
-import { UserBasicInfo } from '@/types/user'
+import { AuthenticatedRequest } from '@/types/api'
 import { UnauthorizedException } from '@/utils/exceptions'
 import { verifyAuthToken } from '@/utils/jwt'
-import { NextFunction, Request, Response } from 'express'
-
-interface AuthenticatedRequest extends Request {
-  user?: UserBasicInfo
-}
+import { NextFunction, Response } from 'express'
 
 export default function authMiddleware(
   req: AuthenticatedRequest,
