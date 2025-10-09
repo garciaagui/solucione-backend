@@ -30,6 +30,7 @@ export default class AuthService {
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role,
     }
 
     const token = generateAuthToken(userBasicInfo)
@@ -75,6 +76,7 @@ export default class AuthService {
       id: newUser.id,
       name: newUser.name,
       email: newUser.email,
+      role: newUser.role,
     }
 
     return {

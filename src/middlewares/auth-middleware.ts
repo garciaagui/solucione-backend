@@ -9,7 +9,7 @@ interface AuthenticatedRequest extends Request {
 
 export default function authMiddleware(
   req: AuthenticatedRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) {
   try {
@@ -20,10 +20,12 @@ export default function authMiddleware(
     }
 
     const decoded = verifyAuthToken(token)
+
     req.user = {
       id: decoded.id,
       email: decoded.email,
       name: decoded.name,
+      role: decoded.role,
     }
 
     next()
