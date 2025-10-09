@@ -1,4 +1,5 @@
 import AuthService from '@/services/auth.service'
+import { AuthenticatedRequest } from '@/types/api'
 import { LoginRequest, RegisterRequest } from '@/types/auth'
 import { NextFunction, Request, Response } from 'express'
 
@@ -55,6 +56,16 @@ export default class AuthController {
         path: '/api',
       })
 
+      return res.status(200).json(response)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  public async me(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const { user } = req
+      const response = await this.service.me(user!.email)
       return res.status(200).json(response)
     } catch (error) {
       next(error)

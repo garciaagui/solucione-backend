@@ -1,5 +1,11 @@
 import AuthModel from '@/models/auth.model'
-import { LoginResponse, LogoutResponse, RegisterResponse, VerifyEmailResponse } from '@/types/auth'
+import {
+  LoginResponse,
+  LogoutResponse,
+  MeResponse,
+  RegisterResponse,
+  VerifyEmailResponse,
+} from '@/types/auth'
 import { UserBasicInfo } from '@/types/user'
 import { ConflictException, NotFoundException, UnauthorizedException } from '@/utils/exceptions'
 import { generateAuthToken, generateRegisterToken, verifyRegisterToken } from '@/utils/jwt'
@@ -108,5 +114,25 @@ export default class AuthService {
     console.log('👤 Logout realizado')
 
     return { message: 'Logout realizado com sucesso.' }
+  }
+
+  public async me(email: string): Promise<MeResponse> {
+    const user = await this.model.findUserByEmail(email)
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado')
+    }
+
+    const userBasicInfo: UserBasicInfo = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    }
+
+    return {
+      message: 'Usuário autenticado',
+      user: userBasicInfo,
+    }
   }
 }

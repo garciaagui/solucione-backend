@@ -28,4 +28,8 @@ router.get('/verify-email', (req: Request, res: Response, next: NextFunction) =>
   controller.verifyEmail(req, res, next)
 })
 
+router.get('/me', authMiddleware, (req: Request, res: Response, next: NextFunction) => {
+  controller.me(req, res, next)
+})
+
 export default router
