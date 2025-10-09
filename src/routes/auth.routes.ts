@@ -1,4 +1,5 @@
 import AuthController from '@/controllers/auth.controller'
+import { authMiddleware } from '@/middlewares'
 import AuthModel from '@/models/auth.model'
 import AuthService from '@/services/auth.service'
 import { PrismaClient } from '@prisma/client'
@@ -15,7 +16,7 @@ router.post('/login', (req: Request, res: Response, next: NextFunction) => {
   controller.login(req, res, next)
 })
 
-router.post('/logout', (req: Request, res: Response, next: NextFunction) => {
+router.post('/logout', authMiddleware, (req: Request, res: Response, next: NextFunction) => {
   controller.logout(req, res, next)
 })
 
