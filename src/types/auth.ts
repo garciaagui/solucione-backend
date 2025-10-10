@@ -9,9 +9,7 @@ export interface LoginRequest {
 export interface LoginResponse {
   response: {
     message: string
-    user: {
-      role: Role
-    } & UserBasicInfo
+    user: UserBasicInfo
   }
   token: string
 }
@@ -35,6 +33,11 @@ export interface VerifyEmailResponse {
 
 export interface LogoutResponse {
   message: string
+}
+
+export interface MeResponse {
+  message: string
+  user: UserBasicInfo
 }
 
 export interface UpdateUserData {

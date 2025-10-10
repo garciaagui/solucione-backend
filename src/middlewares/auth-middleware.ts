@@ -1,15 +1,11 @@
-import { UserBasicInfo } from '@/types/user'
+import { AuthenticatedRequest } from '@/types/api'
 import { UnauthorizedException } from '@/utils/exceptions'
 import { verifyAuthToken } from '@/utils/jwt'
-import { NextFunction, Request, Response } from 'express'
-
-interface AuthenticatedRequest extends Request {
-  user?: UserBasicInfo
-}
+import { NextFunction, Response } from 'express'
 
 export default function authMiddleware(
   req: AuthenticatedRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) {
   try {
@@ -20,10 +16,12 @@ export default function authMiddleware(
     }
 
     const decoded = verifyAuthToken(token)
+
     req.user = {
       id: decoded.id,
       email: decoded.email,
       name: decoded.name,
+      role: decoded.role,
     }
 
     next()

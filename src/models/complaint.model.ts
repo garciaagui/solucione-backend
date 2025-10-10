@@ -8,6 +8,7 @@ const DEFAULT_INCLUDE = {
       id: true,
       name: true,
       email: true,
+      role: true,
     },
   },
   replies: {
@@ -17,6 +18,7 @@ const DEFAULT_INCLUDE = {
           id: true,
           name: true,
           email: true,
+          role: true,
         },
       },
     },
