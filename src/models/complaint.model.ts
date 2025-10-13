@@ -9,6 +9,7 @@ const DEFAULT_INCLUDE = {
       name: true,
       email: true,
       role: true,
+      avatar: true,
     },
   },
   replies: {
@@ -19,6 +20,7 @@ const DEFAULT_INCLUDE = {
           name: true,
           email: true,
           role: true,
+          avatar: true,
         },
       },
     },
@@ -28,9 +30,12 @@ const DEFAULT_INCLUDE = {
 export default class ComplaintModel {
   constructor(private readonly prisma: PrismaClient) {}
 
-  public async findAll(): Promise<ComplaintWithRelations[]> {
+  public async findAll(sort: 'asc' | 'desc' = 'desc'): Promise<ComplaintWithRelations[]> {
     return this.prisma.complaint.findMany({
       include: DEFAULT_INCLUDE,
+      orderBy: {
+        createdAt: sort,
+      },
     })
   }
 
