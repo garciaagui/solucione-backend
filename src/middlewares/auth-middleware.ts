@@ -17,12 +17,7 @@ export default function authMiddleware(
 
     const decoded = verifyAuthToken(token)
 
-    req.user = {
-      id: decoded.id,
-      email: decoded.email,
-      name: decoded.name,
-      role: decoded.role,
-    }
+    req.user = { ...decoded }
 
     next()
   } catch (error) {
