@@ -37,13 +37,14 @@ export default class AuthService {
       name: user.name,
       email: user.email,
       role: user.role,
+      avatar: user.avatar,
     }
 
     const token = generateAuthToken(userBasicInfo)
 
     const response = {
       message: 'Login realizado com sucesso',
-      user: { ...userBasicInfo, role: user.role },
+      user: userBasicInfo,
     }
 
     return { response, token }
@@ -83,6 +84,7 @@ export default class AuthService {
       name: newUser.name,
       email: newUser.email,
       role: newUser.role,
+      avatar: newUser.avatar,
     }
 
     return {
@@ -128,6 +130,7 @@ export default class AuthService {
       name: user.name,
       email: user.email,
       role: user.role,
+      avatar: user.avatar,
     }
 
     return {

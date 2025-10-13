@@ -13,6 +13,7 @@ model User {
     email         String    @unique
     password      String    @db.VarChar(255)
     role          Role
+    avatar        String?    @db.VarChar(255)
     emailVerified Boolean   @default(false) @map(name: "verified_email")
     verifyToken   String?   @map(name: "verify_token")
     createdAt     DateTime  @default(now()) @map(name: "created_at")
