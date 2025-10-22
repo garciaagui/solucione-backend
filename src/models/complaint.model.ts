@@ -1,4 +1,4 @@
-import { ComplaintWithRelations } from '@/types/complaint'
+import { ComplaintWithRelations, CreateComplaintData } from '@/types/complaint'
 import { PrismaClient } from '@prisma/client'
 import { UUID } from 'crypto'
 
@@ -42,6 +42,19 @@ export default class ComplaintModel {
   public async findById(id: UUID): Promise<ComplaintWithRelations | null> {
     return this.prisma.complaint.findUnique({
       where: { id },
+      include: DEFAULT_INCLUDE,
+    })
+  }
+
+  public async create(
+    data: CreateComplaintData,
+    images: string[],
+  ): Promise<ComplaintWithRelations> {
+    return this.prisma.complaint.create({
+      data: {
+        ...data,
+        images,
+      },
       include: DEFAULT_INCLUDE,
     })
   }
