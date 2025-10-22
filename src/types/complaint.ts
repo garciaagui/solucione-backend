@@ -9,3 +9,13 @@ export type ComplaintWithRelations = Complaint & {
     }
   >
 }
+
+export interface CreateComplaintData {
+  title: string
+  description: string
+  street: string
+  neighborhood: string
+  zipCode: string
+  addressReference?: string
+  userId: string
+}
