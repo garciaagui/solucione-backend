@@ -28,12 +28,9 @@ export default class ComplaintController {
   public async findUserComplaints(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
       const user = req.user!
-      const complaints = await this.service.findUserComplaints(user)
+      const response = await this.service.findUserComplaints(user)
 
-      return res.status(200).json({
-        message: 'Reclamações encontradas com sucesso',
-        data: complaints,
-      })
+      return res.status(200).json(response)
     } catch (error) {
       next(error)
     }
