@@ -1,5 +1,6 @@
 import ComplaintModel from '@/models/complaint.model'
 import { ComplaintWithRelations, CreateComplaintRequest } from '@/types/complaint'
+import { UserBasicInfo } from '@/types/user'
 import { NotFoundException, UnauthorizedException } from '@/utils/exceptions'
 import { validateComplaintCreation } from '@/validations/complaint'
 import { validateId } from '@/validations/id'
@@ -15,6 +16,19 @@ export default class ComplaintService {
 
   public async findAll(): Promise<ComplaintWithRelations[]> {
     return this.model.findAll()
+  }
+
+  public async findUserComplaints(user: UserBasicInfo): Promise<ComplaintWithRelations[]> {
+    const { id, role } = user
+    const userId = id as UUID
+
+    validateId(userId)
+
+    if (role === 'user') {
+      return this.model.findByUserId(userId)
+    } else {
+      return this.model.findRepliedByUserId(userId)
+    }
   }
 
   public async findById(id: UUID): Promise<ComplaintWithRelations> {
