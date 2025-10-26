@@ -36,10 +36,4 @@ export const createComplaintSchema = joi.object({
     'string.empty': 'Campo referência não pode ser vazio',
     'string.base': 'Referência precisa ser do tipo string',
   }),
-  userId: joi.number().integer().required().messages({
-    'any.required': 'Campo id de usuário não pode ser vazio',
-    'number.empty': 'Campo id de usuário não pode ser vazio',
-    'number.base': 'Id de usuário deve ser um número inteiro',
-    'number.integer': 'Id de usuário deve ser um número inteiro',
-  }),
 })
