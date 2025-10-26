@@ -17,6 +17,10 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
   controller.findAll(req, res, next)
 })
 
+router.get('/user', authMiddleware, (req: Request, res: Response, next: NextFunction) => {
+  controller.findUserComplaints(req, res, next)
+})
+
 router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
   controller.findById(req, res, next)
 })
