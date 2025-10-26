@@ -1,11 +1,17 @@
 import ComplaintModel from '@/models/complaint.model'
-import { ComplaintWithRelations } from '@/types/complaint'
-import { NotFoundException } from '@/utils/exceptions'
+import { ComplaintWithRelations, CreateComplaintRequest } from '@/types/complaint'
+import { NotFoundException, UnauthorizedException } from '@/utils/exceptions'
+import { validateComplaintCreation } from '@/validations/complaint'
 import { validateId } from '@/validations/id'
 import { UUID } from 'crypto'
+import S3Service from './s3.service'
 
 export default class ComplaintService {
-  constructor(private readonly model: ComplaintModel) {}
+  private s3Service: S3Service
+
+  constructor(private readonly model: ComplaintModel) {
+    this.s3Service = new S3Service()
+  }
 
   public async findAll(): Promise<ComplaintWithRelations[]> {
     return this.model.findAll()
@@ -21,5 +27,24 @@ export default class ComplaintService {
     }
 
     return complaint
+  }
+
+  public async create(data: CreateComplaintRequest): Promise<ComplaintWithRelations> {
+    const { image, text, user } = data
+
+    if (user.role !== 'user') {
+      throw new UnauthorizedException('Admin não pode registrar reclmações')
+    }
+
+    validateComplaintCreation(text)
+
+    const creationData = {
+      ...text,
+      userId: user.id,
+    }
+
+    const imageUrl = await this.s3Service.uploadImage(image.buffer, image.name)
+
+    return this.model.create(creationData, [imageUrl])
   }
 }

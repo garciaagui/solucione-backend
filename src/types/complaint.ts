@@ -10,6 +10,22 @@ export type ComplaintWithRelations = Complaint & {
   >
 }
 
+export interface CreateComplaintRequest {
+  image: {
+    buffer: Buffer
+    name: string
+  }
+  text: {
+    title: string
+    description: string
+    street: string
+    neighborhood: string
+    zipCode: string
+    addressReference?: string
+  }
+  user: UserBasicInfo
+}
+
 export interface CreateComplaintData {
   title: string
   description: string
