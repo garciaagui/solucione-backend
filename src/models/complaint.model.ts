@@ -58,4 +58,30 @@ export default class ComplaintModel {
       include: DEFAULT_INCLUDE,
     })
   }
+
+  public async findByUserId(userId: UUID): Promise<ComplaintWithRelations[]> {
+    return this.prisma.complaint.findMany({
+      where: { userId },
+      include: DEFAULT_INCLUDE,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+  }
+
+  public async findRepliedByUserId(userId: UUID): Promise<ComplaintWithRelations[]> {
+    return this.prisma.complaint.findMany({
+      where: {
+        replies: {
+          some: {
+            userId,
+          },
+        },
+      },
+      include: DEFAULT_INCLUDE,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+  }
 }
