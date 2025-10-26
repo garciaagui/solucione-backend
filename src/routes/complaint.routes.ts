@@ -4,6 +4,8 @@ import ComplaintService from '@/services/complaint.service'
 import { PrismaClient } from '@prisma/client'
 import { NextFunction, Request, Response, Router } from 'express'
 
+import { authMiddleware, multerMiddleware } from '@/middlewares'
+
 const router = Router()
 const prisma = new PrismaClient()
 
@@ -18,5 +20,14 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
 router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
   controller.findById(req, res, next)
 })
+
+router.post(
+  '/',
+  authMiddleware,
+  multerMiddleware.any(),
+  (req: Request, res: Response, next: NextFunction) => {
+    controller.create(req, res, next)
+  },
+)
 
 export default router

@@ -23,6 +23,14 @@ export class UnauthorizedException extends HttpException {
   }
 }
 
+export class ForbiddenException extends HttpException {
+  private static status = 403
+
+  constructor(message: string) {
+    super(ForbiddenException.status, message)
+  }
+}
+
 export class NotFoundException extends HttpException {
   private static status = 404
 
