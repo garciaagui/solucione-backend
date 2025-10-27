@@ -44,7 +44,8 @@ export interface UpdateUserData {
   name: string
   password: string
   role: Role
-  verifyToken: string
+  verifyToken: string | null
+  emailVerified: boolean
 }
 
 export interface CreateUserData extends UpdateUserData {
