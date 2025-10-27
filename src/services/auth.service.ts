@@ -7,6 +7,7 @@ import {
   VerifyEmailResponse,
 } from '@/types/auth'
 import { UserBasicInfo } from '@/types/user'
+import { generateAvatarUrl } from '@/utils/avatar'
 import { ConflictException, NotFoundException, UnauthorizedException } from '@/utils/exceptions'
 import { generateAuthToken, verifyRegisterToken } from '@/utils/jwt'
 import { validateLogin, validateRegister } from '@/validations/auth'
@@ -59,6 +60,8 @@ export default class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
+    const avatarUrl = generateAvatarUrl(email)
+
     // const token = generateRegisterToken(email)
 
     const userData = {
@@ -67,6 +70,7 @@ export default class AuthService {
       role: Role.user,
       verifyToken: null,
       emailVerified: true,
+      avatar: avatarUrl,
     }
 
     // let newUser
@@ -116,8 +120,6 @@ export default class AuthService {
   }
 
   public async logout(): Promise<LogoutResponse> {
-    console.log('👤 Logout realizado')
-
     return { message: 'Logout realizado com sucesso.' }
   }
 

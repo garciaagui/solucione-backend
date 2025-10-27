@@ -50,4 +50,5 @@ export interface UpdateUserData {
 
 export interface CreateUserData extends UpdateUserData {
   email: string
+  avatar: string
 }
