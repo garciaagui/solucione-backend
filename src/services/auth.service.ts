@@ -8,8 +8,7 @@ import {
 } from '@/types/auth'
 import { UserBasicInfo } from '@/types/user'
 import { ConflictException, NotFoundException, UnauthorizedException } from '@/utils/exceptions'
-import { generateAuthToken, generateRegisterToken, verifyRegisterToken } from '@/utils/jwt'
-import { sendVerificationEmail } from '@/utils/resend'
+import { generateAuthToken, verifyRegisterToken } from '@/utils/jwt'
 import { validateLogin, validateRegister } from '@/validations/auth'
 import { Role } from '@prisma/client'
 import bcrypt from 'bcrypt'
@@ -60,24 +59,27 @@ export default class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
-    const token = generateRegisterToken(email)
+    // const token = generateRegisterToken(email)
 
     const userData = {
       name,
       password: hashedPassword,
       role: Role.user,
-      verifyToken: token,
+      verifyToken: null,
+      emailVerified: true,
     }
 
-    let newUser
+    // let newUser
 
-    if (existingUser && !existingUser.emailVerified) {
-      newUser = await this.model.updateUser(email, userData)
-    } else {
-      newUser = await this.model.createUser({ ...userData, email })
-    }
+    // if (existingUser && !existingUser.emailVerified) {
+    //   newUser = await this.model.updateUser(email, userData)
+    // } else {
+    //   newUser = await this.model.createUser({ ...userData, email })
+    // }
 
-    await sendVerificationEmail(name, email, token)
+    const newUser = await this.model.createUser({ ...userData, email })
+
+    // await sendVerificationEmail(name, email, token)
 
     const userBasicInfo: UserBasicInfo = {
       id: newUser.id,
@@ -88,7 +90,8 @@ export default class AuthService {
     }
 
     return {
-      message: 'Usuário cadastrado. Verifique seu e-mail.',
+      // message: 'Usuário cadastrado. Verifique seu e-mail.',
+      message: 'Usuário cadastrado com sucesso.',
       data: {
         user: userBasicInfo,
       },
