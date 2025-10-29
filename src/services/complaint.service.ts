@@ -5,13 +5,16 @@ import { NotFoundException, UnauthorizedException } from '@/utils/exceptions'
 import { validateComplaintCreation } from '@/validations/complaint'
 import { validateId } from '@/validations/id'
 import { UUID } from 'crypto'
+import GeminiService from './gemini.service'
 import S3Service from './s3.service'
 
 export default class ComplaintService {
   private s3Service: S3Service
+  private geminiService: GeminiService
 
   constructor(private readonly model: ComplaintModel) {
     this.s3Service = new S3Service()
+    this.geminiService = new GeminiService()
   }
 
   public async findAll(): Promise<ComplaintWithRelations[]> {
@@ -51,6 +54,8 @@ export default class ComplaintService {
     }
 
     validateComplaintCreation(text)
+
+    await this.geminiService.checkProfanity(text, image.buffer)
 
     const creationData = {
       ...text,

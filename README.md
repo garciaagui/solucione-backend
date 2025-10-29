@@ -183,6 +183,7 @@ npm run format       # Formata código com Prettier
    DATABASE_URL="postgresql://user:password@localhost:5432/solucione"
    JWT_SECRET="seu_jwt_secret"
    RESEND_API_KEY="sua_resend_api_key"
+   GOOGLE_GEMINI_API_KEY="sua_gemini_api_key"
    FRONTEND_URL="http://localhost:3000"
    API_PORT=3001
    NODE_ENV="development"
