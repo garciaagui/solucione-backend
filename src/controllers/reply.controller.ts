@@ -7,7 +7,10 @@ export default class ReplyController {
 
   public async create(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     const user = req.user!
-    const textData = req.body
+    const textData = {
+      description: req.body.description,
+      complaintId: req.body.complaintId,
+    }
 
     const fileData = req.files as Express.Multer.File[]
     const image =
