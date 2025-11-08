@@ -1,9 +1,10 @@
 import ComplaintModel from '@/models/complaint.model'
 import { ComplaintWithRelations, CreateComplaintRequest } from '@/types/complaint'
 import { UserBasicInfo } from '@/types/user'
-import { NotFoundException, UnauthorizedException } from '@/utils/exceptions'
+import { NotFoundException } from '@/utils/exceptions'
 import { validateComplaintCreation } from '@/validations/complaint'
 import { validateId } from '@/validations/id'
+import { validateUserRole } from '@/validations/role'
 import { UUID } from 'crypto'
 import GeminiService from './gemini.service'
 import S3Service from './s3.service'
@@ -49,10 +50,7 @@ export default class ComplaintService {
   public async create(data: CreateComplaintRequest): Promise<ComplaintWithRelations> {
     const { image, text, user } = data
 
-    if (user.role !== 'user') {
-      throw new UnauthorizedException('Admin não pode registrar reclmações')
-    }
-
+    validateUserRole(user.role, 'Administradores não podem registrar reclamações')
     validateComplaintCreation(text)
 
     await this.geminiService.checkProfanity(text, image.buffer)
