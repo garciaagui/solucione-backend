@@ -1,5 +1,5 @@
 import { ComplaintWithRelations, CreateComplaintData } from '@/types/complaint'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Status } from '@prisma/client'
 import { UUID } from 'crypto'
 
 const DEFAULT_INCLUDE = {
@@ -46,19 +46,6 @@ export default class ComplaintModel {
     })
   }
 
-  public async create(
-    data: CreateComplaintData,
-    images: string[],
-  ): Promise<ComplaintWithRelations> {
-    return this.prisma.complaint.create({
-      data: {
-        ...data,
-        images,
-      },
-      include: DEFAULT_INCLUDE,
-    })
-  }
-
   public async findByUserId(userId: UUID): Promise<ComplaintWithRelations[]> {
     return this.prisma.complaint.findMany({
       where: { userId },
@@ -82,6 +69,27 @@ export default class ComplaintModel {
       orderBy: {
         createdAt: 'desc',
       },
+    })
+  }
+
+  public async create(
+    data: CreateComplaintData,
+    images: string[],
+  ): Promise<ComplaintWithRelations> {
+    return this.prisma.complaint.create({
+      data: {
+        ...data,
+        images,
+      },
+      include: DEFAULT_INCLUDE,
+    })
+  }
+
+  public async updateStatus(id: UUID, newStatus: Status): Promise<ComplaintWithRelations> {
+    return this.prisma.complaint.update({
+      where: { id },
+      data: { status: newStatus },
+      include: DEFAULT_INCLUDE,
     })
   }
 }
