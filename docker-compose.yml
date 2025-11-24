@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:latest
+    image: postgres:16-alpine
     container_name: solucione_db
     restart: unless-stopped
     environment:
@@ -10,14 +10,14 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - TZ=America/Sao_Paulo
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - solucione_network
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -q -d solucione -U user']
+      test: ["CMD-SHELL", "pg_isready -q -d solucione -U user"]
       interval: 5s
       timeout: 2s
       retries: 20
@@ -31,7 +31,7 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=admin
       - PGADMIN_LISTEN_PORT=5050
     ports:
-      - '5050:5050'
+      - "5050:5050"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     networks:
